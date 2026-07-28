@@ -1,5 +1,18 @@
 # Test Resource Server
 
+[![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=bugs)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=coverage)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
+
+
 Projet Spring Boot servant de **Resource Server OAuth2** pour valider le bon fonctionnement du projet **auth-server**.
 
 L'objectif de cette application est de :
