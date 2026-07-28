@@ -12,6 +12,7 @@ class TestResourceServerApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// Test à implémenter une fois les apis exposées
 	}
 
 }
