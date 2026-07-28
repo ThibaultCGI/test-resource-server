@@ -1,4 +1,4 @@
-package io.github.tbondetti.test_resource_server;
+package io.github.tbondetti.testresourceserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
