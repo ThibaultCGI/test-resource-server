@@ -129,7 +129,10 @@ class ProduitValidationUtilsTest {
 
     @Test
     void normalizePrixOk() {
-        assertEquals(new BigDecimal("12.99"), normalizePrix(new BigDecimal("12.999")));
+        final BigDecimal prix = new BigDecimal("12.999");
+        final BigDecimal expected = new BigDecimal("12.99");
+
+        assertEquals(expected, normalizePrix(prix));
     }
 
     @Test
@@ -156,9 +159,10 @@ class ProduitValidationUtilsTest {
 
     @Test
     void validatePrixKoWhenNegative() {
+        final BigDecimal prix = new BigDecimal("-10");
         final ResourceServerFunctionalException exception = assertThrows(
                 ResourceServerFunctionalException.class,
-                () -> validatePrix(new BigDecimal("-10"))
+                () -> validatePrix(prix)
         );
 
         assertSame(PRODUIT_PRIX_MUST_BE_POSITIVE, exception.getCode());
@@ -167,9 +171,10 @@ class ProduitValidationUtilsTest {
 
     @Test
     void validatePrixKoWhenTooManyDecimals() {
+        final BigDecimal prix = new BigDecimal("12.999");
         final ResourceServerFunctionalException exception = assertThrows(
                 ResourceServerFunctionalException.class,
-                () -> validatePrix(new BigDecimal("12.999"))
+                () -> validatePrix(prix)
         );
 
         assertSame(PRODUIT_PRIX_HAS_TOO_MANY_DECIMALS, exception.getCode());
@@ -178,7 +183,8 @@ class ProduitValidationUtilsTest {
 
     @Test
     void validatePrixOk() {
-        validatePrix(new BigDecimal("12.99"));
+        final  BigDecimal prix = new BigDecimal("12.99");
+        validatePrix(prix);
     }
 
     @Test
