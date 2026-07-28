@@ -1,0 +1,14 @@
+package io.github.tbondetti.testresourceserver.core.exception;
+
+public enum ResourceServerErrorCode {
+
+    PRODUIT_NOM_REQUIRED,
+    PRODUIT_NOM_TOO_SHORT,
+    PRODUIT_NOM_TOO_LONG,
+
+    NUMERO_GENERATION_FAILED,
+
+    PRODUIT_PRIX_MUST_NOT_BE_NULL,
+    PRODUIT_PRIX_MUST_BE_POSITIVE,
+    PRODUIT_PRIX_HAS_TOO_MANY_DECIMALS
+}
