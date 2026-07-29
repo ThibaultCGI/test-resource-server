@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface CommandeRepositoryPort {
 
     Optional<Commande> findByNumero(final String numero);
+
+    Commande save(final Commande commande);
 }
