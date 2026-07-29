@@ -55,8 +55,6 @@ public class DomainGeneratorUtils {
             "proton.me"
     );
 
-    static final String COMMANDE_NUMERO_TEMPLATE = "CMD-%s-%06d";
-
     public static Produit generateRandomProduit(final String numero) {
         return Produit.builder()
                 .numero(numero)
