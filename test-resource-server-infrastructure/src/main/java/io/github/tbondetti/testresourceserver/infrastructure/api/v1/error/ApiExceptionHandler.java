@@ -1,6 +1,7 @@
 package io.github.tbondetti.testresourceserver.infrastructure.api.v1.error;
 
 import io.github.tbondetti.testresourceserver.core.exception.ResourceServerFunctionalException;
+import io.github.tbondetti.testresourceserver.core.exception.ResourceServerTechnicalException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ApiExceptionHandler {
 
     @ExceptionHandler(ResourceServerFunctionalException.class)
-    public ResponseEntity<ApiErrorResponse> handleAuthServerException(final ResourceServerFunctionalException e) {
+    public ResponseEntity<ApiErrorResponse> handleFunctionalException(final ResourceServerFunctionalException e) {
         final ApiErrorResponse body = ApiErrorResponse.builder()
                 .code(e.getCode())
                 .description(e.getMessage())
@@ -17,6 +18,18 @@ public class ApiExceptionHandler {
 
         return ResponseEntity
                 .badRequest()
+                .body(body);
+    }
+
+    @ExceptionHandler(ResourceServerTechnicalException.class)
+    public ResponseEntity<ApiErrorResponse> handleTechnicalException(final ResourceServerTechnicalException e) {
+        final ApiErrorResponse body = ApiErrorResponse.builder()
+                .code(e.getCode())
+                .description(e.getMessage())
+                .build();
+
+        return ResponseEntity
+                .internalServerError()
                 .body(body);
     }
 }
