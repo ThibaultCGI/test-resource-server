@@ -2,6 +2,9 @@ package io.github.tbondetti.testresourceserver.core.exception;
 
 public enum ResourceServerErrorCode {
 
+    UNAUTHORIZED,
+    FORBIDDEN,
+
     PRODUIT_NOM_REQUIRED,
     PRODUIT_NOM_TOO_SHORT,
     PRODUIT_NOM_TOO_LONG,

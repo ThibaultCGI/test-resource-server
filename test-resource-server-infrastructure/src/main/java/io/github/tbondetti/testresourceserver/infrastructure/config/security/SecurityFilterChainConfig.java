@@ -1,5 +1,7 @@
 package io.github.tbondetti.testresourceserver.infrastructure.config.security;
 
+import io.github.tbondetti.testresourceserver.infrastructure.security.handler.ApiAccessDeniedHandler;
+import io.github.tbondetti.testresourceserver.infrastructure.security.handler.ApiAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,11 +10,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import tools.jackson.databind.ObjectMapper;
 
 @EnableMethodSecurity // permet l'utilisation de @PreAuthorize
 @Configuration
 @RequiredArgsConstructor
 public class SecurityFilterChainConfig {
+
+    private final ObjectMapper objectMapper;
 
     @SuppressWarnings("java:S4502")
     @Bean
@@ -37,7 +42,14 @@ public class SecurityFilterChainConfig {
                  pour récupérer la clé publique du serveur d'autorisation et construire un JwtDecoder
                 */
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+
+                /*
+                Pour custom les retours 401 et 403
+                */
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint(new ApiAuthenticationEntryPoint(this.objectMapper))
+                        .accessDeniedHandler(new ApiAccessDeniedHandler(this.objectMapper))
+                )
                 .build();
     }
-
 }
