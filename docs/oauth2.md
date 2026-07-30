@@ -118,7 +118,7 @@ SecurityFilterChain securityFilterChain(
 
 # Authentification
 
-```java
+```
 .authorizeHttpRequests(auth ->
         auth.anyRequest().authenticated()
 )
@@ -134,7 +134,7 @@ Chaque requête doit fournir un JWT valide.
 
 # Resource Server
 
-```java
+```
 .oauth2ResourceServer(
         oauth2 -> oauth2.jwt(Customizer.withDefaults())
 )
@@ -190,13 +190,13 @@ trs:commande-api.write
 
 Le contrôle d'accès s'effectue via :
 
-```java
+```
 @PreAuthorize(...)
 ```
 
 Exemple :
 
-```java
+```
 @PreAuthorize(
     "hasAuthority('SCOPE_trs:produit-api.write')"
 )

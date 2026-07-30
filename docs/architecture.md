@@ -316,7 +316,7 @@ Les méthodes internes déjà testées sont spyées.
 
 Exemple :
 
-```java
+```
 @Spy
 CreateCommandeUseCase
 ```
