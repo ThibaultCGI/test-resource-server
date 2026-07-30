@@ -1,4 +1,4 @@
-package io.github.tbondetti.testresourceserver.infrastructure.security;
+package io.github.tbondetti.testresourceserver.infrastructure.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
