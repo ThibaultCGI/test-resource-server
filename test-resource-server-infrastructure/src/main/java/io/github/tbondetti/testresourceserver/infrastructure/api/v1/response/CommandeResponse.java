@@ -1,5 +1,6 @@
 package io.github.tbondetti.testresourceserver.infrastructure.api.v1.response;
 
+import io.github.tbondetti.testresourceserver.infrastructure.openapi.response.CommandeResponseApi;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -11,4 +12,4 @@ public record CommandeResponse(
         String emailClient,
         BigDecimal montant,
         List<String> numerosProduits
-) { }
+) implements CommandeResponseApi { }

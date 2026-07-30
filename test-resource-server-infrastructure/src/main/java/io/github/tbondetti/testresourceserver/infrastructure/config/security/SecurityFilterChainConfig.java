@@ -26,8 +26,19 @@ public class SecurityFilterChainConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
 
-                // Toute requête HTTP doit être authentifiée (i.e. avec un token valide)
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth
+
+                        // Pas d'authentification requise pour les endpoint suivants
+                        .requestMatchers(
+                                "/actuator/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml"
+                        ).permitAll()
+
+                        // Toute autre requête HTTP doit être authentifiée (i.e. avec un token valide)
+                        .anyRequest().authenticated())
 
                 /*
                  Permet d'activer le mode "OAuth2 Resource Server"
