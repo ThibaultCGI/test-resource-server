@@ -134,6 +134,15 @@ public interface ProduitApi {
                     )
             )
     )
+    @ApiResponse(
+            responseCode = "500",
+            description = RESPONSE_500_INTERNAL_SERVER_ERROR,
+            content = @Content(
+                    schema = @Schema(
+                            implementation = ApiErrorResponse.class
+                    )
+            )
+    )
     ProduitResponse createProduit(
             @RequestBody(
                     description = CREATE_REQUEST_DESCRIPTION,

@@ -77,6 +77,15 @@ public interface CommandeApi {
                     )
             )
     )
+    @ApiResponse(
+            responseCode = "500",
+            description = RESPONSE_500_INTERNAL_SERVER_ERROR,
+            content = @Content(
+                    schema = @Schema(
+                            implementation = ApiErrorResponse.class
+                    )
+            )
+    )
     CommandeResponse getCommande(
             @Parameter(
                     description = NUMERO_PARAMETER_DESCRIPTION,
