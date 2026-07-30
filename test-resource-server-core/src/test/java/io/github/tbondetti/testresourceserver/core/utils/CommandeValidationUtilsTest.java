@@ -13,8 +13,21 @@ import static io.github.tbondetti.testresourceserver.core.exception.ResourceServ
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.COMMANDE_EMAIL_CLIENT_TOO_LONG;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.COMMANDE_NUMEROS_PRODUITS_ARE_REQUIRED;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.PRODUIT_NOT_FOUND;
-import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.ERROR_COMMANDE_EMAIL_CLIENT_INVALID;
+import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.ERROR_COMMANDE_EMAIL_CLIENT_REQUIRED;
+import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.ERROR_COMMANDE_EMAIL_CLIENT_TOO_LONG;
+import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.ERROR_COMMANDE_NUMEROS_PRODUITS_ARE_REQUIRED;
+import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.ERROR_PRODUITS_NOT_FOUND;
+import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.normalizeAndValidateEmailClient;
+import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.normalizeEmailClient;
+import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.normalizeNumeroProduit;
+import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.normalizeNumerosProduits;
+import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.validateEmailClient;
+import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.validateNumerosProduits;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 

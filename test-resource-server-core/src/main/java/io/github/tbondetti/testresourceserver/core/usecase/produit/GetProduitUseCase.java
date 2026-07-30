@@ -1,7 +1,7 @@
 package io.github.tbondetti.testresourceserver.core.usecase.produit;
 
 import io.github.tbondetti.testresourceserver.core.domain.Produit;
-import io.github.tbondetti.testresourceserver.core.exception.ResourceServerFunctionalException;
+import io.github.tbondetti.testresourceserver.core.exception.ResourceServerNotFoundException;
 import io.github.tbondetti.testresourceserver.core.port.ProduitRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +17,7 @@ public class GetProduitUseCase {
     public Produit execute(final String numero) {
 
         return this.produitRepositoryPort.findByNumero(numero).orElseThrow(
-                () -> new ResourceServerFunctionalException(PRODUIT_NOT_FOUND, ERROR_PRODUIT_NOT_FOUND.formatted(numero))
+                () -> new ResourceServerNotFoundException(PRODUIT_NOT_FOUND, ERROR_PRODUIT_NOT_FOUND.formatted(numero))
         );
     }
 }
