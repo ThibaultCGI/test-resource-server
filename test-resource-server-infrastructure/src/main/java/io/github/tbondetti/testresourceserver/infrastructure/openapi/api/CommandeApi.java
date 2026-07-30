@@ -29,6 +29,7 @@ import static io.github.tbondetti.testresourceserver.infrastructure.openapi.cons
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.RESPONSE_400_BAD_REQUEST;
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.RESPONSE_401_UNAUTHORIZED;
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.RESPONSE_403_FORBIDDEN;
+import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.RESPONSE_500_INTERNAL_SERVER_ERROR;
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.SECURITY_SCHEME_NAME;
 
 @Tag(
@@ -118,6 +119,15 @@ public interface CommandeApi {
     @ApiResponse(
             responseCode = "403",
             description = RESPONSE_403_FORBIDDEN,
+            content = @Content(
+                    schema = @Schema(
+                            implementation = ApiErrorResponse.class
+                    )
+            )
+    )
+    @ApiResponse(
+            responseCode = "500",
+            description = RESPONSE_500_INTERNAL_SERVER_ERROR,
             content = @Content(
                     schema = @Schema(
                             implementation = ApiErrorResponse.class

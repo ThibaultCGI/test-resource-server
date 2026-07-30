@@ -17,6 +17,7 @@ import static io.github.tbondetti.testresourceserver.infrastructure.openapi.cons
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.API_VERSION;
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.CommandeOpenApiConstants.COMMANDE_READ_DESCRIPTION;
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.CommandeOpenApiConstants.COMMANDE_WRITE_DESCRIPTION;
+import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.CONTACT_NAME;
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.ProduitOpenApiConstants.PRODUIT_READ_DESCRIPTION;
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.ProduitOpenApiConstants.PRODUIT_WRITE_DESCRIPTION;
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.SECURITY_SCHEME_NAME;
@@ -64,7 +65,7 @@ public class OpenApiConfiguration {
 
     private Contact contact() {
         return new Contact()
-                .name("Thibault BONDETTI")
+                .name(CONTACT_NAME)
                 ;
     }
 

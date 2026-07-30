@@ -17,6 +17,7 @@ import static io.github.tbondetti.testresourceserver.infrastructure.constants.Sc
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.RESPONSE_400_BAD_REQUEST;
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.RESPONSE_401_UNAUTHORIZED;
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.RESPONSE_403_FORBIDDEN;
+import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.RESPONSE_500_INTERNAL_SERVER_ERROR;
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.SECURITY_SCHEME_NAME;
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.ProduitOpenApiConstants.CREATE_DESCRIPTION;
 import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.ProduitOpenApiConstants.CREATE_REQUEST_DESCRIPTION;
@@ -70,6 +71,15 @@ public interface ProduitApi {
     @ApiResponse(
             responseCode = "404",
             description = RESPONSE_404_NOT_FOUND,
+            content = @Content(
+                    schema = @Schema(
+                            implementation = ApiErrorResponse.class
+                    )
+            )
+    )
+    @ApiResponse(
+            responseCode = "500",
+            description = RESPONSE_500_INTERNAL_SERVER_ERROR,
             content = @Content(
                     schema = @Schema(
                             implementation = ApiErrorResponse.class
