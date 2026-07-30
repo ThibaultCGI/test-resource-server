@@ -1,4 +1,4 @@
-# Test Resource Server
+# test-resource-server
 
 [![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=bugs)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
@@ -12,158 +12,365 @@
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
 
+Projet de simulation d'un **OAuth2 Resource Server** développé avec **Spring Boot**.
 
-Projet Spring Boot servant de **Resource Server OAuth2** pour valider le bon fonctionnement du projet **auth-server**.
+L'objectif principal de ce projet est de servir de consommateur d'API sécurisé afin de tester l'application :
 
-L'objectif de cette application est de :
+- auth-server
 
-- valider les JWT émis par `auth-server`
-- récupérer automatiquement les clés publiques depuis le endpoint JWKS
-- exposer des endpoints protégés par des scopes OAuth2
-- vérifier le fonctionnement de bout en bout de l'écosystème OAuth2
+Le projet implémente :
+
+- Authentication OAuth2 via JWT
+- Validation des JWT via JWKS
+- Contrôle d'accès basé sur les scopes OAuth2
+- Architecture hexagonale
+- API REST de démonstration pour la gestion de produits et de commandes
+
+---
+
+# Fonctionnalités
+
+## Produits
+
+- Création d'un produit
+- Consultation d'un produit
+
+## Commandes
+
+- Création d'une commande
+- Consultation d'une commande
+
+## Sécurité
+
+- OAuth2 Resource Server
+- JWT signé par auth-server
+- Validation automatique via JWKS
+- Authentification obligatoire sur tous les endpoints
+- Autorisation par scopes via `@PreAuthorize`
 
 ---
 
 # Architecture
 
+Le projet est organisé selon une architecture hexagonale.
+
 ```text
-┌─────────────────────┐
-│     auth-server     │
-│ AuthorizationServer │
-└──────────┬──────────┘
-           │
-           │ JWT signé
-           ▼
-┌─────────────────────┐
-│ test-resource-server│
-│   Resource Server   │
-└──────────┬──────────┘
-           │
-           ▼
-      API protégées
+Controller
+    ↓
+Use Case
+    ↓
+Port
+    ↓
+Adapter
 ```
 
+Structure :
+
+```text
+test-resource-server
+├── test-resource-server-boot
+├── test-resource-server-core
+├── test-resource-server-infrastructure
+└── test-resource-server-coverage-report
+```
+
+## Core
+
+Contient :
+
+- Domain
+- UseCases
+- Ports
+- Exceptions
+- Validation métier
+
+Le module ne dépend pas de Spring.
+
+## Infrastructure
+
+Contient :
+
+- Controllers REST
+- DTO
+- Response
+- Mappers
+- Configurations Spring
+- Adapters de persistence
+- Sécurité OAuth2
+
+## Boot
+
+Point d'entrée Spring Boot.
+
 ---
 
-# Prérequis
+# Authentification
 
-- Java 25
-- Maven 3.9+
-- Projet `auth-server` démarré
+Le projet est configuré comme un OAuth2 Resource Server.
 
----
-
-# Configuration
-
-## application.properties
+Configuration :
 
 ```properties
-server.port=8081
-
-spring.security.oauth2.resourceserver.jwt.jwk-set-uri=http://localhost:8080/oauth2/jwks
+spring.security.oauth2.resourceserver.jwt.jwk-set-uri=${auth-server.path}/oauth2/jwks
 ```
 
-Le Resource Server utilisera automatiquement le endpoint :
+Au démarrage, Spring Security récupère automatiquement les clés publiques exposées par l'Authorization Server afin de valider les JWT reçus.
+
+---
+
+# Scopes
+
+## Produits
+
+Lecture :
 
 ```text
-http://localhost:8080/oauth2/jwks
+trs:product-api.read
 ```
 
-pour récupérer les clés publiques lui permettant de valider les signatures des JWT.
+Écriture :
 
----
-
-# Démarrage
-
-Depuis la racine du projet :
-
-```bash
-mvn spring-boot:run
+```text
+trs:product-api.write
 ```
 
-ou :
+## Commandes
 
-```bash
-mvn clean package
-java -jar target/test-resource-server-*.*ar
+Lecture :
+
+```text
+trs:commande-api.read
 ```
 
----
+Écriture :
 
-# Obtention*d'un token
-
-Exemple de génération **un*token depuis l'Authorization Serve* :
-
-```bash
-curl --request POST \
-* --url*http://localhost:8080/oauth2/token*\
-  --header 'Content-Type: applic*tion/x-www-form-urlencoded' \
-  --*ata grant_type=client_credentials *
-  --data scope=tpa:tpa-api.read \*  --user CLIENT_ID*CLIENT_SECRET
-```
-
-Réponse :
-
-*``*son
-{
-  "access_token": "...",
-  "*oken_type": "Bearer",
-  "expires_i*": 300,
-**"scope": "tpa:tpa-api.read"
-}
-```
-*---
-
-# Utilisation du token
-
-Exemp*e :
-
-```bash
-curl*\
-  --header "Authorization: Beare* <ACCESS_TOKEN>" \
-  http://*ocalhost:8081/api/read
+```text
+trs:commande-api.write
 ```
 
 ---
 
-#*Scopes utilisés
+# Endpoints
 
-Dans le projet d'*xemple :
+## Produits
 
-| Scope*| Description |
-|---------**--------|
-| `tpa:tpa-api.read` | L*cture des ressources exposées par *PA |
-| `tpa:tpa-api.write` | Écrit*re des ressources exposées par TPA*|
-
----
-
-# Exemples d'API
-
-## Endpo*nt public
+### Consultation d'un produit
 
 ```http
-GET /api/public*```
-
-Accessible sans authentificat*on.
-
----
-
-## Endpoint lecture
-
-```*ttp
-GET /api/read
+GET /api/v1/produits/{numero}
 ```
 
-Nécessite :*
+Scopes requis :
+
 ```text
-tpa:tpa-api.read
+trs:product-api.read
 ```
 
-Exe*ple Spring Security :
+ou
 
-```*ava*@PreAuthorize("hasAuthority('SCOPE*tpa:tpa-api.read')")
+```text
+trs:product-api.write
+```
+
+### Création d'un produit
+
+```http
+POST /api/v1/produits
+```
+
+Payload :
+
+```json
+{
+  "nom": "Produit de test",
+  "prix": 12.34
+}
+```
+
+Scope requis :
+
+```text
+trs:product-api.write
 ```
 
 ---
 
-## *
+## Commandes
+
+### Consultation d'une commande
+
+```http
+GET /api/v1/commandes/{numero}
+```
+
+Scopes requis :
+
+```text
+trs:commande-api.read
+```
+
+ou
+
+```text
+trs:commande-api.write
+```
+
+### Création d'une commande
+
+```http
+POST /api/v1/commandes
+```
+
+Payload :
+
+```json
+{
+  "emailClient": "jean.martin@gmail.com",
+  "numerosProduits": [
+    "P00001",
+    "P00002"
+  ]
+}
+```
+
+Scope requis :
+
+```text
+trs:commande-api.write
+```
+
+---
+
+# Gestion des erreurs
+
+Format standard :
+
+```json
+{
+  "code": "PRODUIT_NOT_FOUND",
+  "description": "Aucun produit avec le numéro P123 n'est présent dans le référentiel."
+}
+```
+
+## Codes HTTP utilisés
+
+### 400
+
+Erreur fonctionnelle :
+
+```text
+PRODUIT_NOM_REQUIRED
+COMMANDE_EMAIL_CLIENT_INVALID
+PRODUIT_PRIX_MUST_BE_POSITIVE
+...
+```
+
+### 401
+
+Utilisateur non authentifié.
+
+### 403
+
+Utilisateur authentifié mais non autorisé.
+
+### 404
+
+Ressource inexistante :
+
+```text
+PRODUIT_NOT_FOUND
+COMMANDE_NOT_FOUND
+```
+
+### 500
+
+Erreur technique.
+
+---
+
+# Obtention d'un token
+
+Exemple avec le grant :
+
+```text
+client_credentials
+```
+
+```http
+POST /oauth2/token
+```
+
+Body :
+
+```text
+grant_type=client_credentials
+scope=trs:product-api.read
+```
+
+Authentification client :
+
+```http
+Authorization: Basic base64(clientId:clientSecret)
+```
+
+---
+
+# Exécution locale
+
+## Auth Server
+
+Démarrer :
+
+```text
+auth-server
+```
+
+par défaut :
+
+```text
+http://localhost:8080
+```
+
+## Resource Server
+
+Démarrer :
+
+```text
+test-resource-server
+```
+
+par défaut :
+
+```text
+http://localhost:8081
+```
+
+---
+
+# Tests
+
+Le projet contient :
+
+- Tests unitaires des UseCases
+- Tests unitaires des Controllers
+- Tests unitaires des Mappers
+- Tests unitaires des ValidationUtils
+- Tests unitaires des Generators
+
+Rapport de couverture :
+
+```text
+test-resource-server-coverage-report
+```
+
+---
+
+# Objectif du projet
+
+Ce projet est un support de démonstration OAuth2 permettant :
+
+- de tester auth-server
+- de tester les scopes OAuth2
+- de tester les JWT
+- de tester la validation JWKS
+- de démontrer une architecture hexagonale avec Spring Boot
