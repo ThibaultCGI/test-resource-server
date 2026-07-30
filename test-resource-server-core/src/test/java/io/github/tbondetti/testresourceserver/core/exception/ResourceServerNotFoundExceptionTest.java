@@ -3,7 +3,7 @@ package io.github.tbondetti.testresourceserver.core.exception;
 import org.junit.jupiter.api.Test;
 
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.PRODUIT_NOM_REQUIRED;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 class ResourceServerNotFoundExceptionTest {
 
