@@ -1,7 +1,7 @@
 package io.github.tbondetti.testresourceserver.core.usecase.produit;
 
 import io.github.tbondetti.testresourceserver.core.domain.Produit;
-import io.github.tbondetti.testresourceserver.core.exception.ResourceServerFunctionalException;
+import io.github.tbondetti.testresourceserver.core.exception.ResourceServerNotFoundException;
 import io.github.tbondetti.testresourceserver.core.port.ProduitRepositoryPort;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,8 +34,8 @@ class GetProduitUseCaseTest {
 
         when(this.produitRepositoryPort.findByNumero(numero)).thenReturn(Optional.empty());
 
-        final ResourceServerFunctionalException exception = assertThrows(
-                ResourceServerFunctionalException.class,
+        final ResourceServerNotFoundException exception = assertThrows(
+                ResourceServerNotFoundException.class,
                 () -> this.subject.execute(numero)
         );
 

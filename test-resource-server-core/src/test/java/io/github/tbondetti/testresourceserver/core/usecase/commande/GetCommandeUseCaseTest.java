@@ -1,7 +1,7 @@
 package io.github.tbondetti.testresourceserver.core.usecase.commande;
 
 import io.github.tbondetti.testresourceserver.core.domain.Commande;
-import io.github.tbondetti.testresourceserver.core.exception.ResourceServerFunctionalException;
+import io.github.tbondetti.testresourceserver.core.exception.ResourceServerNotFoundException;
 import io.github.tbondetti.testresourceserver.core.port.CommandeRepositoryPort;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,8 +34,8 @@ class GetCommandeUseCaseTest {
 
         when(this.commandeRepositoryPort.findByNumero(numero)).thenReturn(Optional.empty());
 
-        final ResourceServerFunctionalException exception = assertThrows(
-                ResourceServerFunctionalException.class,
+        final ResourceServerNotFoundException exception = assertThrows(
+                ResourceServerNotFoundException.class,
                 () -> this.subject.execute(numero)
         );
 
