@@ -1,7 +1,7 @@
 package io.github.tbondetti.testresourceserver.core.usecase.commande;
 
 import io.github.tbondetti.testresourceserver.core.domain.Commande;
-import io.github.tbondetti.testresourceserver.core.exception.ResourceServerFunctionalException;
+import io.github.tbondetti.testresourceserver.core.exception.ResourceServerNotFoundException;
 import io.github.tbondetti.testresourceserver.core.port.CommandeRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +17,7 @@ public class GetCommandeUseCase {
     public Commande execute(final String numero) {
 
         return this.commandeRepositoryPort.findByNumero(numero).orElseThrow(
-                () -> new ResourceServerFunctionalException(COMMANDE_NOT_FOUND, ERROR_COMMANDE_NOT_FOUND.formatted(numero))
+                () -> new ResourceServerNotFoundException(COMMANDE_NOT_FOUND, ERROR_COMMANDE_NOT_FOUND.formatted(numero))
         );
     }
 }
