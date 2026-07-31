@@ -9,13 +9,13 @@ import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
+import static io.github.tbondetti.testresourceserver.core.constants.ProduitRules.PRODUIT_NOM_MAX_LENGTH;
+import static io.github.tbondetti.testresourceserver.core.constants.ProduitRules.PRODUIT_NOM_MIN_LENGTH;
 import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_PRODUIT_NOM_LENGTH;
 import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_PRODUIT_NOM_REQUIRED;
 import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_PRODUIT_PRIX_FORMAT_INCORRECT;
 import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_PRODUIT_PRIX_MUST_BE_POSITIVE;
 import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_PRODUIT_PRIX_MUST_NOT_BE_NULL;
-import static io.github.tbondetti.testresourceserver.core.constants.ProduitRules.PRODUIT_NOM_MAX_LENGTH;
-import static io.github.tbondetti.testresourceserver.core.constants.ProduitRules.PRODUIT_NOM_MIN_LENGTH;
 
 public record CreateProduitRequest(
         @NotBlank(

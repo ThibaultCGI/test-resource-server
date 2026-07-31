@@ -12,19 +12,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.API_DESCRIPTION;
-import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.API_TITLE;
-import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.API_VERSION;
-import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.CommandeOpenApiConstants.COMMANDE_READ_DESCRIPTION;
-import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.CommandeOpenApiConstants.COMMANDE_WRITE_DESCRIPTION;
-import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.CONTACT_NAME;
-import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.ProduitOpenApiConstants.PRODUIT_READ_DESCRIPTION;
-import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.ProduitOpenApiConstants.PRODUIT_WRITE_DESCRIPTION;
-import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.SECURITY_SCHEME_NAME;
 import static io.github.tbondetti.testresourceserver.infrastructure.constants.Scopes.COMMANDE_READ;
 import static io.github.tbondetti.testresourceserver.infrastructure.constants.Scopes.COMMANDE_WRITE;
 import static io.github.tbondetti.testresourceserver.infrastructure.constants.Scopes.PRODUIT_READ;
 import static io.github.tbondetti.testresourceserver.infrastructure.constants.Scopes.PRODUIT_WRITE;
+import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.CommandeOpenApiConstants.COMMANDE_READ_DESCRIPTION;
+import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.CommandeOpenApiConstants.COMMANDE_WRITE_DESCRIPTION;
+import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.API_DESCRIPTION;
+import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.API_TITLE;
+import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.API_VERSION;
+import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.CONTACT_NAME;
+import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.OpenApiConstants.SECURITY_SCHEME_NAME;
+import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.ProduitOpenApiConstants.PRODUIT_READ_DESCRIPTION;
+import static io.github.tbondetti.testresourceserver.infrastructure.openapi.constants.ProduitOpenApiConstants.PRODUIT_WRITE_DESCRIPTION;
 import static io.swagger.v3.oas.models.security.SecurityScheme.Type.OAUTH2;
 
 @Configuration
