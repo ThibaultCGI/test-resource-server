@@ -2,7 +2,7 @@
 
 ## Objectif
 
-Le projet `test-resource-server` agit comme un OAuth2 Resource Server.
+Le projet agit comme un OAuth2 Resource Server.
 
 Il consomme les JWT émis par :
 
@@ -10,30 +10,29 @@ Il consomme les JWT émis par :
 auth-server
 ```
 
-afin de protéger les endpoints REST.
+et protège les ressources exposées via l'API REST.
 
 ---
 
 # Architecture OAuth2
 
 ```text
-                   ┌────────────────────┐
-                   │       Client       │
-                   └─────────┬──────────┘
-                             │
-                             │ Client Credentials
-                             │
-                             ▼
-                   ┌────────────────────┐
-                   │    Auth Server     │
-                   └─────────┬──────────┘
-                             │
-                             │ JWT
-                             │
-                             ▼
-                   ┌────────────────────┐
-                   │ Resource Server    │
-                   └────────────────────┘
+                 ┌──────────────┐
+                 │    Client    │
+                 └──────┬───────┘
+                        │
+                        │ OAuth2
+                        ▼
+                 ┌──────────────┐
+                 │ Auth Server  │
+                 └──────┬───────┘
+                        │
+                        │ JWT
+                        ▼
+                 ┌──────────────┐
+                 │ Resource     │
+                 │ Server       │
+                 └──────────────┘
 ```
 
 ---
@@ -59,96 +58,27 @@ JWT
 Configuration :
 
 ```properties
-spring.security.oauth2.resourceserver.jwt.jwk-set-uri=${auth-server.path}/oauth2/jwks
+spring.security.oauth2.resourceserver.jwt.jwk-set-uri=${auth-server.oauth2.jwks-path}
 ```
 
-Au démarrage :
+Le Resource Server :
 
-```text
-Resource Server
-    ↓
-Télécharge les clés publiques
-    ↓
-Construit un JwtDecoder
-```
-
-Lors d'une requête :
-
-```text
-JWT reçu
-    ↓
-Signature vérifiée
-    ↓
-Expiration vérifiée
-    ↓
-Authentification créée
-```
+1. télécharge les clés publiques
+2. valide la signature
+3. valide l'expiration
+4. construit le SecurityContext
 
 ---
 
 # JWKS
 
-Endpoint exposé par l'Authorization Server :
+Endpoint utilisé :
 
 ```text
 /oauth2/jwks
 ```
 
-Le Resource Server utilise ce point d'entrée pour récupérer les clés publiques permettant de valider les JWT.
-
----
-
-# SecurityFilterChain
-
-```java
-@Bean
-SecurityFilterChain securityFilterChain(
-        final HttpSecurity http
-) throws Exception {
-
-    return http
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-            .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-            .build();
-}
-```
-
----
-
-# Authentification
-
-```
-.authorizeHttpRequests(auth ->
-        auth.anyRequest().authenticated()
-)
-```
-
-Signifie :
-
-```text
-Chaque requête doit fournir un JWT valide.
-```
-
----
-
-# Resource Server
-
-```
-.oauth2ResourceServer(
-        oauth2 -> oauth2.jwt(Customizer.withDefaults())
-)
-```
-
-Active :
-
-```text
-Lecture du JWT
-Validation du JWT
-Validation de la signature
-Validation de l'expiration
-Création du SecurityContext
-```
+Permet la récupération des clés publiques utilisées pour vérifier les JWT.
 
 ---
 
@@ -188,7 +118,7 @@ trs:commande-api.write
 
 # Contrôle d'accès
 
-Le contrôle d'accès s'effectue via :
+Le contrôle d'accès est effectué via :
 
 ```
 @PreAuthorize(...)
@@ -197,89 +127,7 @@ Le contrôle d'accès s'effectue via :
 Exemple :
 
 ```
-@PreAuthorize(
-    "hasAuthority('SCOPE_trs:produit-api.write')"
-)
-```
-
----
-
-# Correspondance des scopes
-
-JWT :
-
-```text
-trs:produit-api.read
-```
-
-↓
-
-Authority Spring Security :
-
-```text
-SCOPE_trs:produit-api.read
-```
-
----
-
-# Produits
-
-## Lecture
-
-```http
-GET /api/v1/produits/{numero}
-```
-
-Scopes autorisés :
-
-```text
-trs:produit-api.read
-trs:produit-api.write
-```
-
----
-
-## Création
-
-```http
-POST /api/v1/produits
-```
-
-Scope requis :
-
-```text
-trs:produit-api.write
-```
-
----
-
-# Commandes
-
-## Lecture
-
-```http
-GET /api/v1/commandes/{numero}
-```
-
-Scopes autorisés :
-
-```text
-trs:commande-api.read
-trs:commande-api.write
-```
-
----
-
-## Création
-
-```http
-POST /api/v1/commandes
-```
-
-Scope requis :
-
-```text
-trs:commande-api.write
+@PreAuthorize(CAN_WRITE_PRODUCT)
 ```
 
 ---
@@ -316,7 +164,51 @@ Ressource inexistante.
 
 ---
 
-# Test avec Bruno
+## 500
+
+Erreur technique.
+
+```http
+500 Internal Server Error
+```
+
+---
+
+# OpenAPI
+
+Swagger UI :
+
+```text
+http://localhost:8081/swagger-ui.html
+```
+
+OpenAPI JSON :
+
+```text
+http://localhost:8081/v3/api-docs
+```
+
+OpenAPI YAML :
+
+```text
+http://localhost:8081/v3/api-docs.yaml
+```
+
+---
+
+# OAuth2 dans Swagger
+
+La configuration OpenAPI expose :
+
+- OAuth2
+- client_credentials
+- les scopes disponibles
+
+L'utilisateur peut consulter la documentation complète de l'API et de son modèle de sécurité depuis Swagger UI.
+
+---
+
+# Tests avec Bruno
 
 ## Obtention d'un token
 
@@ -330,12 +222,6 @@ Grant :
 client_credentials
 ```
 
-Scope :
-
-```text
-trs:produit-api.read
-```
-
 Authentification :
 
 ```text
@@ -344,21 +230,21 @@ Basic Auth Header
 
 ---
 
-## Appel d'une ressource
+## Consommation d'une ressource
 
 ```http
-GET http://localhost:8081/api/v1/produits/test
+GET /api/v1/produits/P00001
 ```
 
 Header :
 
 ```http
-Authorization: Bearer <access_token>
+Authorization: Bearer <token>
 ```
 
 ---
 
-# Projet associé
+# Applications concernées
 
 Authorization Server :
 
@@ -371,5 +257,3 @@ Resource Server :
 ```text
 test-resource-server
 ```
-
-Les deux projets sont conçus pour être exécutés ensemble afin de démontrer un flux OAuth2 complet.
