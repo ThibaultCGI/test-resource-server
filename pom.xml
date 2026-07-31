@@ -47,10 +47,18 @@
 		<sonar.coverage.jacoco.aggregateXmlReportPaths>
 			${maven.multiModuleProjectDirectory}/test-resource-server-coverage-report/target/site/jacoco-aggregate/jacoco.xml
 		</sonar.coverage.jacoco.aggregateXmlReportPaths>
+
+		<!--
+		 On ne teste pas les fichiers de configuration
+		 Ni le starter
+		 Ni les adapters qui simulent des données random
+	 	-->
 		<sonar.coverage.exclusions>
 			**/TestResourceServerApplication.java,
 			**/config/**,
-			**/*Configuration.java
+			**/*Configuration.java,
+			**/**Adapter.java,
+			**/DomainGeneratorUtils.java
 		</sonar.coverage.exclusions>
 	</properties>
 
