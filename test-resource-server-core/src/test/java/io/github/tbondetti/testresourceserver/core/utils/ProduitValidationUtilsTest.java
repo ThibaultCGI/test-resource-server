@@ -8,18 +8,18 @@ import java.math.BigDecimal;
 
 import static io.github.tbondetti.testresourceserver.core.constants.ProduitRules.PRODUIT_NOM_MAX_LENGTH;
 import static io.github.tbondetti.testresourceserver.core.constants.ProduitRules.PRODUIT_NOM_MIN_LENGTH;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_PRODUIT_NOM_REQUIRED;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_PRODUIT_NOM_TOO_LONG;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_PRODUIT_NOM_TOO_SHORT;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_PRODUIT_PRIX_HAS_TOO_MANY_DECIMALS;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_PRODUIT_PRIX_MUST_BE_POSITIVE;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_PRODUIT_PRIX_MUST_NOT_BE_NULL;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.PRODUIT_NOM_REQUIRED;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.PRODUIT_NOM_TOO_LONG;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.PRODUIT_NOM_TOO_SHORT;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.PRODUIT_PRIX_HAS_TOO_MANY_DECIMALS;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.PRODUIT_PRIX_MUST_BE_POSITIVE;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.PRODUIT_PRIX_MUST_NOT_BE_NULL;
-import static io.github.tbondetti.testresourceserver.core.utils.ProduitValidationUtils.ERROR_PRODUIT_NOM_REQUIRED;
-import static io.github.tbondetti.testresourceserver.core.utils.ProduitValidationUtils.ERROR_PRODUIT_NOM_TOO_LONG;
-import static io.github.tbondetti.testresourceserver.core.utils.ProduitValidationUtils.ERROR_PRODUIT_NOM_TOO_SHORT;
-import static io.github.tbondetti.testresourceserver.core.utils.ProduitValidationUtils.ERROR_PRODUIT_PRIX_HAS_TOO_MANY_DECIMALS;
-import static io.github.tbondetti.testresourceserver.core.utils.ProduitValidationUtils.ERROR_PRODUIT_PRIX_MUST_BE_POSITIVE;
-import static io.github.tbondetti.testresourceserver.core.utils.ProduitValidationUtils.ERROR_PRODUIT_PRIX_MUST_NOT_BE_NULL;
 import static io.github.tbondetti.testresourceserver.core.utils.ProduitValidationUtils.normalizeAndValidateNom;
 import static io.github.tbondetti.testresourceserver.core.utils.ProduitValidationUtils.normalizeAndValidatePrix;
 import static io.github.tbondetti.testresourceserver.core.utils.ProduitValidationUtils.normalizeNom;
@@ -79,10 +79,7 @@ class ProduitValidationUtilsTest {
 
         assertSame(PRODUIT_NOM_TOO_SHORT, exception.getCode());
 
-        assertEquals(
-                ERROR_PRODUIT_NOM_TOO_SHORT.formatted(PRODUIT_NOM_MIN_LENGTH),
-                exception.getMessage()
-        );
+        assertEquals(ERROR_PRODUIT_NOM_TOO_SHORT, exception.getMessage());
     }
 
     @Test
@@ -95,10 +92,7 @@ class ProduitValidationUtilsTest {
         );
 
         assertSame(PRODUIT_NOM_TOO_LONG, exception.getCode());
-        assertEquals(
-                ERROR_PRODUIT_NOM_TOO_LONG.formatted(PRODUIT_NOM_MAX_LENGTH),
-                exception.getMessage()
-        );
+        assertEquals(ERROR_PRODUIT_NOM_TOO_LONG, exception.getMessage());
     }
 
     @Test

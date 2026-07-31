@@ -5,6 +5,7 @@ import io.github.tbondetti.testresourceserver.core.usecase.produit.GetProduitUse
 import io.github.tbondetti.testresourceserver.infrastructure.api.v1.dto.CreateProduitRequest;
 import io.github.tbondetti.testresourceserver.infrastructure.api.v1.response.ProduitResponse;
 import io.github.tbondetti.testresourceserver.infrastructure.openapi.api.ProduitApi;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,7 +47,9 @@ public class ProduitController implements ProduitApi {
     )
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize(CAN_WRITE_PRODUCT)
-    public ProduitResponse createProduit(@RequestBody final CreateProduitRequest request) {
+    public ProduitResponse createProduit(
+            @Valid @RequestBody final CreateProduitRequest request
+    ) {
         return toResponse(this.createProduitUseCase.execute(
                 request.nom(),
                 request.prix()

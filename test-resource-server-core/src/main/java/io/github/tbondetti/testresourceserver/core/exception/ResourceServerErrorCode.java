@@ -23,4 +23,6 @@ public enum ResourceServerErrorCode {
 
     COMMANDE_NOT_FOUND,
     COMMANDE_NUMEROS_PRODUITS_ARE_REQUIRED,
+
+    VALIDATION_ERROR
 }
