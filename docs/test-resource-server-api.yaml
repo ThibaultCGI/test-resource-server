@@ -1,0 +1,357 @@
+openapi: 3.1.0
+info:
+  title: Test Resource Server API
+  description: |
+    API OAuth2 Resource Server utilisée pour tester auth-server.
+
+    Cette application expose une API REST sécurisée
+    par OAuth2 et JWT.
+  contact:
+    name: Thibault BONDETTI
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081
+    description: Generated server url
+tags:
+  - name: Produits
+    description: Gestion des produits.
+  - name: Commandes
+    description: Gestion des commandes.
+paths:
+  /api/v1/produits:
+    post:
+      tags:
+        - Produits
+      summary: Créer un produit
+      description: Crée un nouveau produit.
+      operationId: createProduit
+      requestBody:
+        description: Produit à créer.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProduitRequest"
+        required: true
+      responses:
+        "201":
+          description: Produit créé.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProduitResponse"
+        "400":
+          description: Requête invalide.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "401":
+          description: Authentification requise.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Accès refusé.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "500":
+          description: Erreur interne du serveur.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+        - oauth2:
+            - trs:produit-api.write
+  /api/v1/commandes:
+    post:
+      tags:
+        - Commandes
+      summary: Créer une commande
+      description: Crée une nouvelle commande.
+      operationId: createCommande
+      requestBody:
+        description: Commande à créer.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCommandeRequest"
+        required: true
+      responses:
+        "201":
+          description: Commande créée.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommandeResponse"
+        "400":
+          description: Requête invalide.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "401":
+          description: Authentification requise.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Accès refusé.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "500":
+          description: Erreur interne du serveur.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+        - oauth2:
+            - trs:commande-api.write
+  /api/v1/produits/{numero}:
+    get:
+      tags:
+        - Produits
+      summary: Consulter un produit
+      description: Retourne un produit à partir de son numéro.
+      operationId: getProduit
+      parameters:
+        - name: numero
+          in: path
+          description: Numéro du produit.
+          required: true
+          schema:
+            type: string
+          example: P00001
+      responses:
+        "200":
+          description: Produit trouvé.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProduitResponse"
+        "401":
+          description: Authentification requise.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Accès refusé.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "404":
+          description: Produit introuvable.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "500":
+          description: Erreur interne du serveur.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+        - oauth2:
+            - trs:produit-api.read
+            - trs:produit-api.write
+  /api/v1/commandes/{numero}:
+    get:
+      tags:
+        - Commandes
+      summary: Consulter une commande
+      description: Retourne une commande à partir de son numéro.
+      operationId: getCommande
+      parameters:
+        - name: numero
+          in: path
+          description: Numéro de la commande.
+          required: true
+          schema:
+            type: string
+          example: CMD-20260730-123456
+      responses:
+        "200":
+          description: Commande trouvée.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommandeResponse"
+        "401":
+          description: Authentification requise.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Accès refusé.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "404":
+          description: Commande introuvable.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "500":
+          description: Erreur interne du serveur.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+        - oauth2:
+            - trs:commande-api.read
+            - trs:commande-api.write
+components:
+  schemas:
+    CreateProduitRequest:
+      type: object
+      properties:
+        nom:
+          type: string
+          description: Nom du produit
+          example: Produit de démonstration
+          maxLength: 50
+          minLength: 3
+        prix:
+          type: number
+          description: Prix du produit (maximum 2 décimales).
+          example: 12.34
+          multipleOf: 0.01
+      required:
+        - nom
+        - prix
+    ApiErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Code fonctionnel
+          enum:
+            - UNAUTHORIZED
+            - FORBIDDEN
+            - PRODUIT_NOM_REQUIRED
+            - PRODUIT_NOM_TOO_SHORT
+            - PRODUIT_NOM_TOO_LONG
+            - NUMERO_GENERATION_FAILED
+            - PRODUIT_PRIX_MUST_NOT_BE_NULL
+            - PRODUIT_PRIX_MUST_BE_POSITIVE
+            - PRODUIT_PRIX_HAS_TOO_MANY_DECIMALS
+            - PRODUIT_NOT_FOUND
+            - COMMANDE_EMAIL_CLIENT_REQUIRED
+            - COMMANDE_EMAIL_CLIENT_TOO_LONG
+            - COMMANDE_EMAIL_CLIENT_INVALID
+            - COMMANDE_NOT_FOUND
+            - COMMANDE_NUMEROS_PRODUITS_ARE_REQUIRED
+            - VALIDATION_ERROR
+          example: PRODUIT_NOT_FOUND
+        description:
+          type: string
+          description: Description de l'erreur
+      required:
+        - code
+        - description
+    ProduitResponse:
+      type: object
+      properties:
+        numero:
+          type: string
+          description: Numéro du produit.
+          example: P00001
+          maxLength: 25
+          minLength: 25
+        nom:
+          type: string
+          description: Nom du produit
+          example: Produit de démonstration
+          maxLength: 50
+          minLength: 3
+        prix:
+          type: number
+          description: Prix du produit (maximum 2 décimales).
+          example: 12.34
+          multipleOf: 0.01
+      required:
+        - nom
+        - numero
+        - prix
+    CreateCommandeRequest:
+      type: object
+      properties:
+        emailClient:
+          type: string
+          format: email
+          description: Adresse email du client
+          example: jean.martin@gmail.com
+          maxLength: 254
+          minLength: 0
+        numerosProduits:
+          type: array
+          description: Liste des numéros de produits
+          example:
+            - P00001
+            - P00002
+          items:
+            type: string
+            minLength: 1
+          minItems: 1
+      required:
+        - emailClient
+        - numerosProduits
+    CommandeResponse:
+      type: object
+      properties:
+        numero:
+          type: string
+          description: Numéro de la commande.
+          example: CMD-20260730-123456
+          maxLength: 25
+          minLength: 25
+        emailClient:
+          type: string
+          format: email
+          description: Adresse email du client
+          example: jean.martin@gmail.com
+          maxLength: 254
+        montant:
+          type: number
+          description: Montant total de la commande
+          example: 123.45
+          multipleOf: 0.01
+        numerosProduits:
+          type: array
+          description: Liste des numéros de produits
+          example:
+            - P00001
+            - P00002
+          items:
+            type: string
+      required:
+        - emailClient
+        - montant
+        - numero
+        - numerosProduits
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      name: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: http://localhost:8080/oauth2/token
+          scopes:
+            trs:produit-api.read: Lire les produits
+            trs:produit-api.write: Créer et modifier les produits
+            trs:commande-api.read: Lire les commandes
+            trs:commande-api.write: Créer et modifier les commandes
