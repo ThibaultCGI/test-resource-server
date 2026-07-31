@@ -1,30 +1,20 @@
 # test-resource-server
 
-[![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=bugs)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=coverage)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=ThibaultCGI_test-resource-server&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=ThibaultCGI_test-resource-server)
+Projet de démonstration d'un OAuth2 Resource Server développé avec Spring Boot.
 
-Projet de simulation d'un **OAuth2 Resource Server** développé avec **Spring Boot**.
-
-L'objectif principal de ce projet est de servir de consommateur d'API sécurisé afin de tester l'application :
+L'objectif principal est de fournir une API REST sécurisée permettant de tester et valider le fonctionnement de l'application d'authentification :
 
 - auth-server
 
 Le projet implémente :
 
-- Authentication OAuth2 via JWT
-- Validation des JWT via JWKS
-- Contrôle d'accès basé sur les scopes OAuth2
+- OAuth2 Resource Server
+- JWT
+- JWKS
+- Contrôle d'accès par scopes
 - Architecture hexagonale
-- API REST de démonstration pour la gestion de produits et de commandes
+- OpenAPI 3
+- Swagger UI
 
 ---
 
@@ -32,32 +22,40 @@ Le projet implémente :
 
 ## Produits
 
-- Création d'un produit
 - Consultation d'un produit
+- Création d'un produit
 
 ## Commandes
 
-- Création d'une commande
 - Consultation d'une commande
+- Création d'une commande
 
 ## Sécurité
 
-- OAuth2 Resource Server
-- JWT signé par auth-server
-- Validation automatique via JWKS
-- Authentification obligatoire sur tous les endpoints
-- Autorisation par scopes via `@PreAuthorize`
+- Authentification OAuth2
+- Validation des JWT
+- Validation des signatures via JWKS
+- Autorisation basée sur les scopes OAuth2
+- Contrôle d'accès via `@PreAuthorize`
+
+## Documentation
+
+- OpenAPI 3
+- Swagger UI
+- Documentation des DTO
+- Documentation des réponses métier
+- Documentation des réponses d'erreur
 
 ---
 
 # Architecture
 
-Le projet est organisé selon une architecture hexagonale.
+Le projet est développé selon une architecture hexagonale.
 
 ```text
 Controller
     ↓
-Use Case
+UseCase
     ↓
 Port
     ↓
@@ -74,47 +72,29 @@ test-resource-server
 └── test-resource-server-coverage-report
 ```
 
-## Core
-
-Contient :
-
-- Domain
-- UseCases
-- Ports
-- Exceptions
-- Validation métier
-
-Le module ne dépend pas de Spring.
-
-## Infrastructure
-
-Contient :
-
-- Controllers REST
-- DTO
-- Response
-- Mappers
-- Configurations Spring
-- Adapters de persistence
-- Sécurité OAuth2
-
-## Boot
-
-Point d'entrée Spring Boot.
-
 ---
 
-# Authentification
+# OAuth2
 
-Le projet est configuré comme un OAuth2 Resource Server.
+Le projet agit comme un OAuth2 Resource Server.
 
-Configuration :
+Les JWT sont émis par :
 
-```properties
-spring.security.oauth2.resourceserver.jwt.jwk-set-uri=${auth-server.path}/oauth2/jwks
+```text
+auth-server
 ```
 
-Au démarrage, Spring Security récupère automatiquement les clés publiques exposées par l'Authorization Server afin de valider les JWT reçus.
+Le Resource Server récupère automatiquement les clés publiques via :
+
+```text
+/oauth2/jwks
+```
+
+afin de valider :
+
+- signature
+- expiration
+- scopes
 
 ---
 
@@ -125,13 +105,13 @@ Au démarrage, Spring Security récupère automatiquement les clés publiques ex
 Lecture :
 
 ```text
-trs:product-api.read
+trs:produit-api.read
 ```
 
 Écriture :
 
 ```text
-trs:product-api.write
+trs:produit-api.write
 ```
 
 ## Commandes
@@ -150,93 +130,58 @@ trs:commande-api.write
 
 ---
 
+# OpenAPI
+
+Swagger UI :
+
+```text
+http://localhost:8081/swagger-ui.html
+```
+
+Description OpenAPI JSON :
+
+```text
+http://localhost:8081/v3/api-docs
+```
+
+Description OpenAPI YAML :
+
+```text
+http://localhost:8081/v3/api-docs.yaml
+```
+
+---
+
 # Endpoints
 
 ## Produits
 
-### Consultation d'un produit
+### Consulter un produit
 
 ```http
 GET /api/v1/produits/{numero}
 ```
 
-Scopes requis :
-
-```text
-trs:product-api.read
-```
-
-ou
-
-```text
-trs:product-api.write
-```
-
-### Création d'un produit
+### Créer un produit
 
 ```http
 POST /api/v1/produits
-```
-
-Payload :
-
-```json
-{
-  "nom": "Produit de test",
-  "prix": 12.34
-}
-```
-
-Scope requis :
-
-```text
-trs:product-api.write
 ```
 
 ---
 
 ## Commandes
 
-### Consultation d'une commande
+### Consulter une commande
 
 ```http
 GET /api/v1/commandes/{numero}
 ```
 
-Scopes requis :
-
-```text
-trs:commande-api.read
-```
-
-ou
-
-```text
-trs:commande-api.write
-```
-
-### Création d'une commande
+### Créer une commande
 
 ```http
 POST /api/v1/commandes
-```
-
-Payload :
-
-```json
-{
-  "emailClient": "jean.martin@gmail.com",
-  "numerosProduits": [
-    "P00001",
-    "P00002"
-  ]
-}
-```
-
-Scope requis :
-
-```text
-trs:commande-api.write
 ```
 
 ---
@@ -252,66 +197,15 @@ Format standard :
 }
 ```
 
-## Codes HTTP utilisés
+Codes HTTP :
 
-### 400
-
-Erreur fonctionnelle :
-
-```text
-PRODUIT_NOM_REQUIRED
-COMMANDE_EMAIL_CLIENT_INVALID
-PRODUIT_PRIX_MUST_BE_POSITIVE
-...
-```
-
-### 401
-
-Utilisateur non authentifié.
-
-### 403
-
-Utilisateur authentifié mais non autorisé.
-
-### 404
-
-Ressource inexistante :
-
-```text
-PRODUIT_NOT_FOUND
-COMMANDE_NOT_FOUND
-```
-
-### 500
-
-Erreur technique.
-
----
-
-# Obtention d'un token
-
-Exemple avec le grant :
-
-```text
-client_credentials
-```
-
-```http
-POST /oauth2/token
-```
-
-Body :
-
-```text
-grant_type=client_credentials
-scope=trs:product-api.read
-```
-
-Authentification client :
-
-```http
-Authorization: Basic base64(clientId:clientSecret)
-```
+| Code | Description              |
+|------|--------------------------|
+| 400  | Erreur fonctionnelle     |
+| 401  | Authentification requise |
+| 403  | Accès refusé             |
+| 404  | Ressource inexistante    |
+| 500  | Erreur technique         |
 
 ---
 
@@ -319,27 +213,11 @@ Authorization: Basic base64(clientId:clientSecret)
 
 ## Auth Server
 
-Démarrer :
-
-```text
-auth-server
-```
-
-par défaut :
-
 ```text
 http://localhost:8080
 ```
 
 ## Resource Server
-
-Démarrer :
-
-```text
-test-resource-server
-```
-
-par défaut :
 
 ```text
 http://localhost:8081
@@ -357,7 +235,7 @@ Le projet contient :
 - Tests unitaires des ValidationUtils
 - Tests unitaires des Generators
 
-Rapport de couverture :
+Rapport :
 
 ```text
 test-resource-server-coverage-report
@@ -367,10 +245,11 @@ test-resource-server-coverage-report
 
 # Objectif du projet
 
-Ce projet est un support de démonstration OAuth2 permettant :
+Le projet permet :
 
 - de tester auth-server
+- de tester OAuth2
+- de tester JWT
+- de tester JWKS
 - de tester les scopes OAuth2
-- de tester les JWT
-- de tester la validation JWKS
 - de démontrer une architecture hexagonale avec Spring Boot

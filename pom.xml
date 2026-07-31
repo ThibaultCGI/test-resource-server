@@ -36,6 +36,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>25</java.version>
 		<lombok.version>1.18.46</lombok.version>
+		<spingdoc.version>3.0.3</spingdoc.version>
 
 		<!-- Pour générer des rapport de couverture de TU pour SONAR -->
 		<jacoco.version>0.8.15</jacoco.version>
@@ -46,10 +47,18 @@
 		<sonar.coverage.jacoco.aggregateXmlReportPaths>
 			${maven.multiModuleProjectDirectory}/test-resource-server-coverage-report/target/site/jacoco-aggregate/jacoco.xml
 		</sonar.coverage.jacoco.aggregateXmlReportPaths>
+
+		<!--
+		 On ne teste pas les fichiers de configuration
+		 Ni le starter
+		 Ni les adapters qui simulent des données random
+	 	-->
 		<sonar.coverage.exclusions>
 			**/TestResourceServerApplication.java,
 			**/config/**,
-			**/*Configuration.java
+			**/*Configuration.java,
+			**/**Adapter.java,
+			**/DomainGeneratorUtils.java
 		</sonar.coverage.exclusions>
 	</properties>
 
@@ -77,6 +86,12 @@
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
 				<version>${lombok.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+				<version>${spingdoc.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

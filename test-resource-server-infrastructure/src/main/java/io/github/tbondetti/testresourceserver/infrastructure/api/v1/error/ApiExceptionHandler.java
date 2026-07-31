@@ -3,10 +3,11 @@ package io.github.tbondetti.testresourceserver.infrastructure.api.v1.error;
 import io.github.tbondetti.testresourceserver.core.exception.ResourceServerFunctionalException;
 import io.github.tbondetti.testresourceserver.core.exception.ResourceServerNotFoundException;
 import io.github.tbondetti.testresourceserver.core.exception.ResourceServerTechnicalException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
@@ -19,7 +20,7 @@ public class ApiExceptionHandler {
                 .build();
 
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
+                .status(NOT_FOUND)
                 .body(body);
     }
 

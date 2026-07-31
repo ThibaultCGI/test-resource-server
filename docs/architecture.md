@@ -2,41 +2,38 @@
 
 ## Vue d'ensemble
 
-Le projet `test-resource-server` est développé selon une architecture hexagonale.
+Le projet est construit selon une architecture hexagonale.
 
-L'objectif est de séparer :
+Objectifs :
 
-- le métier
-- les cas d'utilisation
-- les dépendances techniques
-- l'exposition REST
-- la sécurité OAuth2
-
-afin de préserver l'indépendance du domaine métier.
+- isoler le métier
+- limiter les dépendances techniques
+- faciliter les tests
+- rendre le domaine indépendant de Spring
 
 ---
 
 # Architecture générale
 
 ```text
-                    ┌─────────────────────┐
-                    │     Controllers     │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │      Use Cases      │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │        Ports        │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │      Adapters       │
-                    └─────────────────────┘
+                ┌─────────────────┐
+                │   Controller    │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │    Use Case     │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │      Port       │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │    Adapter      │
+                └─────────────────┘
 ```
 
 ---
@@ -53,11 +50,11 @@ test-resource-server
 
 ---
 
-# Module Core
+# Core
 
-Le module Core contient l'intégralité du métier.
+Le Core contient l'intégralité du métier.
 
-Le module ne dépend pas de Spring.
+Il ne dépend pas de Spring.
 
 ## Contenu
 
@@ -68,24 +65,18 @@ core
 ├── port
 ├── exception
 ├── constants
-├── utils
-└── generator
+├── generator
+└── utils
 ```
 
 ### Domain
-
-Contient les objets métier :
 
 ```text
 Produit
 Commande
 ```
 
----
-
-### Use Cases
-
-Contient les cas d'utilisation :
+### UseCases
 
 ```text
 GetProduitUseCase
@@ -95,13 +86,7 @@ GetCommandeUseCase
 CreateCommandeUseCase
 ```
 
----
-
 ### Ports
-
-Définissent les contrats utilisés par le métier.
-
-Exemples :
 
 ```text
 ProduitRepositoryPort
@@ -111,49 +96,20 @@ NumeroRepositoryPort
 
 ---
 
-### Generator
-
-Contient les composants métier réutilisables.
-
-Exemple :
-
-```text
-NumeroGenerator
-```
-
----
-
-### Validation
-
-Les règles de validation sont regroupées dans :
-
-```text
-ProduitValidationUtils
-CommandeValidationUtils
-```
-
----
-
-# Module Infrastructure
+# Infrastructure
 
 Le module Infrastructure contient tous les éléments techniques.
 
-## Contenu
-
-```text
-infrastructure
-├── api
-├── config
-├── persistence
-├── security
-└── utils
-```
-
----
-
 ## API
 
-Exposition REST.
+```text
+api
+├── controller
+├── dto
+├── response
+├── mapper
+└── error
+```
 
 ### Controllers
 
@@ -162,174 +118,172 @@ ProduitController
 CommandeController
 ```
 
-### DTO
+---
+
+# OpenAPI
+
+La documentation OpenAPI est volontairement séparée de l'implémentation REST.
+
+Structure :
 
 ```text
-CreateProduitRequest
-CreateCommandeRequest
-```
-
-### Response
-
-```text
-ProduitResponse
-CommandeResponse
-```
-
-### Mapper
-
-```text
-ProduitMapper
-CommandeMapper
+openapi
+├── api
+├── dto
+├── response
+├── constants
+└── config
 ```
 
 ---
 
-## Persistence
+## api
 
-Implémentations des ports du Core.
-
-```text
-ProduitRepositoryAdapter
-CommandeRepositoryAdapter
-NumeroRepositoryAdapter
-```
-
-Ces adapters simulent un comportement de persistance afin de tester OAuth2 sans dépendre d'une base de données.
-
----
-
-## Security
-
-Configuration du Resource Server.
+Interfaces de documentation des endpoints.
 
 ```text
-SecurityFilterChainConfig
-Scopes
+ProduitApi
+CommandeApi
 ```
 
 Responsabilités :
 
-- validation des JWT
-- récupération des clés publiques
-- authentification
-- contrôle d'accès basé sur les scopes
+- Tags
+- Operations
+- SecurityRequirement
+- ApiResponse
 
 ---
 
-# Module Boot
+## dto
 
-Contient le point d'entrée Spring Boot.
+Documentation des DTO.
 
 ```text
-TestResourceServerApplication
+CreateProduitRequestApi
+CreateCommandeRequestApi
+```
+
+Responsabilités :
+
+- descriptions
+- exemples
+- contraintes documentaires
+
+---
+
+## response
+
+Documentation des réponses.
+
+```text
+ProduitResponseApi
+CommandeResponseApi
+ApiErrorResponseApi
+```
+
+Responsabilités :
+
+- descriptions
+- exemples
+- champs requis
+
+---
+
+## constants
+
+Constantes de documentation OpenAPI.
+
+```text
+OpenApiConstants
+ProduitOpenApiConstants
+CommandeOpenApiConstants
+```
+
+---
+
+## config
+
+Configuration OpenAPI.
+
+```text
+OpenApiConfiguration
+```
+
+Responsabilités :
+
+- OAuth2
+- Scopes
+- Swagger UI
+- Description générale de l'API
+
+---
+
+# Sécurité
+
+Le Resource Server utilise :
+
+```text
+OAuth2
+JWT
+JWKS
+```
+
+Validation :
+
+```text
+JWT
+    ↓
+JWKS
+    ↓
+Authentication
+    ↓
+@PreAuthorize
 ```
 
 ---
 
 # Gestion des erreurs
 
-## Exceptions métier
+## Fonctionnelles
 
 ```text
 ResourceServerFunctionalException
 ```
 
-Retour :
+↓
 
 ```http
-400 Bad Request
+400
 ```
 
 ---
 
-## Ressources inexistantes
+## Ressource absente
 
 ```text
 ResourceServerNotFoundException
 ```
 
-Retour :
+↓
 
 ```http
-404 Not Found
+404
 ```
 
 ---
 
-## Exceptions techniques
+## Techniques
 
 ```text
 ResourceServerTechnicalException
 ```
 
-Retour :
+↓
 
 ```http
-500 Internal Server Error
+500
 ```
-
----
-
-# Principes de test
-
-Le projet applique les règles suivantes :
-
-## Une responsabilité = un test
-
-```text
-Une méthode
-    ↓
-Un comportement
-    ↓
-Un test dédié
-```
-
----
-
-## Méthodes composites
-
-Les méthodes composites testent uniquement leur orchestration.
-
-Exemple :
-
-```text
-normalizeAndValidateEmailClient()
-```
-
-vérifie :
-
-```text
-appel normalizeEmailClient()
-appel validateEmailClient()
-```
-
-sans retester leur logique interne.
-
----
-
-## Use Cases
-
-Les dépendances sont mockées.
-
-Les méthodes internes déjà testées sont spyées.
-
-Exemple :
-
-```java
-@Spy
-CreateCommandeUseCase
-```
-
----
-
-## Controllers
-
-Les UseCases sont mockés.
-
-Les Mappers statiques sont mockés.
-
-Le contrôleur est testé uniquement sur sa responsabilité.
 
 ---
 

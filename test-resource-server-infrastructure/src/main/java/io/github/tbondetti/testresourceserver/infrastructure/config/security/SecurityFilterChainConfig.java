@@ -12,6 +12,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import tools.jackson.databind.ObjectMapper;
 
+import static io.github.tbondetti.testresourceserver.infrastructure.config.security.SecurityPaths.ACTUATOR_ALL;
+import static io.github.tbondetti.testresourceserver.infrastructure.config.security.SecurityPaths.OPENAPI_DOCS_ALL;
+import static io.github.tbondetti.testresourceserver.infrastructure.config.security.SecurityPaths.OPENAPI_DOCS_YAML;
+import static io.github.tbondetti.testresourceserver.infrastructure.config.security.SecurityPaths.SWAGGER_UI_ALL;
+import static io.github.tbondetti.testresourceserver.infrastructure.config.security.SecurityPaths.SWAGGER_UI_HTML;
+
 @EnableMethodSecurity // permet l'utilisation de @PreAuthorize
 @Configuration
 @RequiredArgsConstructor
@@ -26,8 +32,19 @@ public class SecurityFilterChainConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
 
-                // Toute requête HTTP doit être authentifiée (i.e. avec un token valide)
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth
+
+                        // Pas d'authentification requise pour les endpoint suivants
+                        .requestMatchers(
+                                ACTUATOR_ALL,
+                                SWAGGER_UI_ALL,
+                                SWAGGER_UI_HTML,
+                                OPENAPI_DOCS_ALL,
+                                OPENAPI_DOCS_YAML
+                        ).permitAll()
+
+                        // Toute autre requête HTTP doit être authentifiée (i.e. avec un token valide)
+                        .anyRequest().authenticated())
 
                 /*
                  Permet d'activer le mode "OAuth2 Resource Server"

@@ -4,6 +4,7 @@ import io.github.tbondetti.testresourceserver.core.usecase.produit.CreateProduit
 import io.github.tbondetti.testresourceserver.core.usecase.produit.GetProduitUseCase;
 import io.github.tbondetti.testresourceserver.infrastructure.api.v1.dto.CreateProduitRequest;
 import io.github.tbondetti.testresourceserver.infrastructure.api.v1.response.ProduitResponse;
+import io.github.tbondetti.testresourceserver.infrastructure.openapi.api.ProduitApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,26 +17,35 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import static io.github.tbondetti.testresourceserver.infrastructure.api.v1.mapper.ProduitMapper.toResponse;
-import static io.github.tbondetti.testresourceserver.infrastructure.constants.Scopes.PRODUIT_READ;
-import static io.github.tbondetti.testresourceserver.infrastructure.constants.Scopes.PRODUIT_WRITE;
+import static io.github.tbondetti.testresourceserver.infrastructure.constants.Authorizations.CAN_READ_PRODUCT;
+import static io.github.tbondetti.testresourceserver.infrastructure.constants.Authorizations.CAN_WRITE_PRODUCT;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/api/v1/produits")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyAuthority('" + PRODUIT_READ + "', '" + PRODUIT_WRITE + "')")
-public class ProduitController {
+@PreAuthorize(CAN_READ_PRODUCT)
+public class ProduitController implements ProduitApi {
 
     private final GetProduitUseCase getProduitUseCase;
     private final CreateProduitUseCase createProduitUseCase;
 
-    @GetMapping("/{numero}")
+    @Override
+    @GetMapping(
+            value = "/{numero}",
+            produces = APPLICATION_JSON_VALUE
+    )
     public ProduitResponse getProduit(@PathVariable final String numero) {
         return toResponse(this.getProduitUseCase.execute(numero));
     }
 
-    @PostMapping
+    @Override
+    @PostMapping(
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE
+    )
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('" + PRODUIT_WRITE + "')")
+    @PreAuthorize(CAN_WRITE_PRODUCT)
     public ProduitResponse createProduit(@RequestBody final CreateProduitRequest request) {
         return toResponse(this.createProduitUseCase.execute(
                 request.nom(),
