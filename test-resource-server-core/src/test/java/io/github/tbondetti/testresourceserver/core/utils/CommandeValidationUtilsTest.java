@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.github.tbondetti.testresourceserver.core.constants.CommandeRules.COMMANDE_EMAIL_CLIENT_MAX_LENGTH;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_COMMANDE_EMAIL_CLIENT_INVALID;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_COMMANDE_EMAIL_CLIENT_REQUIRED;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_COMMANDE_EMAIL_CLIENT_TOO_LONG;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_COMMANDE_NUMEROS_PRODUITS_ARE_REQUIRED;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_PRODUITS_NOT_FOUND;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.COMMANDE_EMAIL_CLIENT_INVALID;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.COMMANDE_EMAIL_CLIENT_REQUIRED;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.COMMANDE_EMAIL_CLIENT_TOO_LONG;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.COMMANDE_NUMEROS_PRODUITS_ARE_REQUIRED;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.PRODUIT_NOT_FOUND;
-import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.ERROR_COMMANDE_EMAIL_CLIENT_INVALID;
-import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.ERROR_COMMANDE_EMAIL_CLIENT_REQUIRED;
-import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.ERROR_COMMANDE_EMAIL_CLIENT_TOO_LONG;
-import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.ERROR_COMMANDE_NUMEROS_PRODUITS_ARE_REQUIRED;
-import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.ERROR_PRODUITS_NOT_FOUND;
 import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.normalizeAndValidateEmailClient;
 import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.normalizeEmailClient;
 import static io.github.tbondetti.testresourceserver.core.utils.CommandeValidationUtils.normalizeNumeroProduit;
@@ -75,10 +75,7 @@ class CommandeValidationUtilsTest {
         );
 
         assertSame(COMMANDE_EMAIL_CLIENT_TOO_LONG, exception.getCode());
-        assertEquals(
-                ERROR_COMMANDE_EMAIL_CLIENT_TOO_LONG.formatted(COMMANDE_EMAIL_CLIENT_MAX_LENGTH),
-                exception.getMessage()
-        );
+        assertEquals(ERROR_COMMANDE_EMAIL_CLIENT_TOO_LONG, exception.getMessage());
     }
 
     @Test

@@ -11,6 +11,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static io.github.tbondetti.testresourceserver.core.constants.CommandeRules.COMMANDE_EMAIL_CLIENT_MAX_LENGTH;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_COMMANDE_EMAIL_CLIENT_INVALID;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_COMMANDE_EMAIL_CLIENT_REQUIRED;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_COMMANDE_EMAIL_CLIENT_TOO_LONG;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_COMMANDE_NUMEROS_PRODUITS_ARE_REQUIRED;
+import static io.github.tbondetti.testresourceserver.core.constants.ValidationErrorMessages.ERROR_PRODUITS_NOT_FOUND;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.COMMANDE_EMAIL_CLIENT_INVALID;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.COMMANDE_EMAIL_CLIENT_REQUIRED;
 import static io.github.tbondetti.testresourceserver.core.exception.ResourceServerErrorCode.COMMANDE_EMAIL_CLIENT_TOO_LONG;
@@ -22,16 +27,7 @@ import static java.util.Objects.isNull;
 @UtilityClass
 public class CommandeValidationUtils {
 
-    static final String ERROR_COMMANDE_EMAIL_CLIENT_REQUIRED = "L'adresse email du client est obligatoire.";
-
-    static final String ERROR_COMMANDE_EMAIL_CLIENT_TOO_LONG = "L'adresse email du client ne peut dépasser %s caractères.";
-
-    static final String ERROR_COMMANDE_EMAIL_CLIENT_INVALID = "L'adresse email du client est invalide.";
-
-    static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-
-    static final String ERROR_PRODUITS_NOT_FOUND = "Les numéros de produits %s ne sont pas présents dans le référentiel.";
-    static final String ERROR_COMMANDE_NUMEROS_PRODUITS_ARE_REQUIRED = "Au moins un numéro de produit est obligatoire.";
+    public static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 
     public static String normalizeAndValidateEmailClient(final String emailClient) {
         final String normalizedEmailClient = normalizeEmailClient(emailClient);
@@ -50,8 +46,7 @@ public class CommandeValidationUtils {
 
         if (emailClient.length() > COMMANDE_EMAIL_CLIENT_MAX_LENGTH) {
             throw new ResourceServerFunctionalException(
-                    COMMANDE_EMAIL_CLIENT_TOO_LONG,
-                    ERROR_COMMANDE_EMAIL_CLIENT_TOO_LONG.formatted(COMMANDE_EMAIL_CLIENT_MAX_LENGTH)
+                    COMMANDE_EMAIL_CLIENT_TOO_LONG, ERROR_COMMANDE_EMAIL_CLIENT_TOO_LONG
             );
         }
 

@@ -5,6 +5,7 @@ import io.github.tbondetti.testresourceserver.core.usecase.commande.GetCommandeU
 import io.github.tbondetti.testresourceserver.infrastructure.api.v1.dto.CreateCommandeRequest;
 import io.github.tbondetti.testresourceserver.infrastructure.api.v1.response.CommandeResponse;
 import io.github.tbondetti.testresourceserver.infrastructure.openapi.api.CommandeApi;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,7 +41,9 @@ public class CommandeController implements CommandeApi {
     )
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize(CAN_WRITE_COMMANDE)
-    public CommandeResponse createCommande(@RequestBody final CreateCommandeRequest request) {
+    public CommandeResponse createCommande(
+            @Valid @RequestBody final CreateCommandeRequest request
+    ) {
         return toResponse(this.createCommandeUseCase.execute(
                 request.emailClient(),
                 request.numerosProduits()
