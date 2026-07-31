@@ -22,6 +22,17 @@
             <groupId>io.github.tbondetti</groupId>
             <artifactId>test-resource-server-infrastructure</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.github.tbondetti</groupId>
+            <artifactId>test-resource-server-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
