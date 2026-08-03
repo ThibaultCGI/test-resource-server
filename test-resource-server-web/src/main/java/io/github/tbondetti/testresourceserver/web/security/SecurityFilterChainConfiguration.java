@@ -21,7 +21,7 @@ import static io.github.tbondetti.testresourceserver.web.security.SecurityPaths.
 @EnableMethodSecurity // permet l'utilisation de @PreAuthorize
 @Configuration
 @RequiredArgsConstructor
-public class SecurityFilterChainConfig {
+public class SecurityFilterChainConfiguration {
 
     private final ObjectMapper objectMapper;
 

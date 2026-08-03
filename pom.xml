@@ -58,7 +58,7 @@
 			**/TestResourceServerApplication.java,
 			**/config/**,
 			**/*Configuration.java,
-			**/**Adapter.java,
+			**/*Adapter.java,
 			**/DomainGeneratorUtils.java
 		</sonar.coverage.exclusions>
 	</properties>
