@@ -12,10 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static io.github.tbondetti.testresourceserver.web.security.Scopes.COMMANDE_READ;
-import static io.github.tbondetti.testresourceserver.web.security.Scopes.COMMANDE_WRITE;
-import static io.github.tbondetti.testresourceserver.web.security.Scopes.PRODUIT_READ;
-import static io.github.tbondetti.testresourceserver.web.security.Scopes.PRODUIT_WRITE;
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.CommandeOpenApiConstants.COMMANDE_READ_DESCRIPTION;
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.CommandeOpenApiConstants.COMMANDE_WRITE_DESCRIPTION;
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.OpenApiConstants.API_DESCRIPTION;
@@ -25,6 +21,10 @@ import static io.github.tbondetti.testresourceserver.web.openapi.constants.OpenA
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.OpenApiConstants.SECURITY_SCHEME_NAME;
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.ProduitOpenApiConstants.PRODUIT_READ_DESCRIPTION;
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.ProduitOpenApiConstants.PRODUIT_WRITE_DESCRIPTION;
+import static io.github.tbondetti.testresourceserver.web.security.Scopes.COMMANDE_READ;
+import static io.github.tbondetti.testresourceserver.web.security.Scopes.COMMANDE_WRITE;
+import static io.github.tbondetti.testresourceserver.web.security.Scopes.PRODUIT_READ;
+import static io.github.tbondetti.testresourceserver.web.security.Scopes.PRODUIT_WRITE;
 import static io.swagger.v3.oas.models.security.SecurityScheme.Type.OAUTH2;
 
 @Configuration

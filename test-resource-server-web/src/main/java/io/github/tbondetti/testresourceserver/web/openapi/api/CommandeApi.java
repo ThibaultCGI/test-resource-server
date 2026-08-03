@@ -12,8 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import static io.github.tbondetti.testresourceserver.web.security.Scopes.COMMANDE_READ;
-import static io.github.tbondetti.testresourceserver.web.security.Scopes.COMMANDE_WRITE;
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.CommandeOpenApiConstants.CREATE_DESCRIPTION;
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.CommandeOpenApiConstants.CREATE_REQUEST_DESCRIPTION;
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.CommandeOpenApiConstants.CREATE_SUMMARY;
@@ -31,6 +29,8 @@ import static io.github.tbondetti.testresourceserver.web.openapi.constants.OpenA
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.OpenApiConstants.RESPONSE_403_FORBIDDEN;
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.OpenApiConstants.RESPONSE_500_INTERNAL_SERVER_ERROR;
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.OpenApiConstants.SECURITY_SCHEME_NAME;
+import static io.github.tbondetti.testresourceserver.web.security.Scopes.COMMANDE_READ;
+import static io.github.tbondetti.testresourceserver.web.security.Scopes.COMMANDE_WRITE;
 
 @Tag(
         name = TAG,

@@ -4,14 +4,13 @@ import io.github.tbondetti.testresourceserver.core.exception.ResourceServerError
 import io.github.tbondetti.testresourceserver.core.exception.ResourceServerFunctionalException;
 import io.github.tbondetti.testresourceserver.core.exception.ResourceServerNotFoundException;
 import io.github.tbondetti.testresourceserver.core.exception.ResourceServerTechnicalException;
-import io.github.tbondetti.testresourceserver.web.api.v1.error.ApiErrorResponse;
-import io.github.tbondetti.testresourceserver.web.api.v1.error.ApiExceptionHandler;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.MethodParameter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.FieldError;
@@ -80,12 +79,10 @@ class ApiExceptionHandlerTest {
 
     @Test
     void handleMethodArgumentNotValidExceptionWithNoFieldErrorOk() {
-        final BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(
-                new Object(),
-                "request"
-        );
+        final BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(new Object(), "request");
 
-        final MethodArgumentNotValidException exception = new MethodArgumentNotValidException(null, bindingResult);
+        final MethodParameter parameter = mock(MethodParameter.class);
+        final MethodArgumentNotValidException exception = new MethodArgumentNotValidException(parameter, bindingResult);
 
         final ResponseEntity<ApiErrorResponse> actual = this.subject.handleMethodArgumentNotValidException(exception);
 
@@ -103,27 +100,14 @@ class ApiExceptionHandlerTest {
     void handleMethodArgumentNotValidExceptionOk() {
         final String message = "Le nom du produit est obligatoire.";
 
-        final BeanPropertyBindingResult bindingResult =
-                new BeanPropertyBindingResult(new Object(), "request");
+        final BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(new Object(), "request");
 
-        bindingResult.addError(
-                new FieldError(
-                        "request",
-                        "nom",
-                        message
-                )
-        );
+        bindingResult.addError(new FieldError("request", "nom", message));
 
-        final MethodArgumentNotValidException exception =
-                new MethodArgumentNotValidException(
-                        null,
-                        bindingResult
-                );
+        final MethodParameter parameter = mock(MethodParameter.class);
+        final MethodArgumentNotValidException exception = new MethodArgumentNotValidException(parameter, bindingResult);
 
-        final ResponseEntity<ApiErrorResponse> actual =
-                this.subject.handleMethodArgumentNotValidException(
-                        exception
-                );
+        final ResponseEntity<ApiErrorResponse> actual = this.subject.handleMethodArgumentNotValidException(exception);
 
         assertEquals(BAD_REQUEST.value(), actual.getStatusCode().value());
 

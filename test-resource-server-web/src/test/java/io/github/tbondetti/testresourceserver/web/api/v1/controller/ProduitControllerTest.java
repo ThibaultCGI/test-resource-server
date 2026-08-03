@@ -3,7 +3,6 @@ package io.github.tbondetti.testresourceserver.web.api.v1.controller;
 import io.github.tbondetti.testresourceserver.core.domain.Produit;
 import io.github.tbondetti.testresourceserver.core.usecase.produit.CreateProduitUseCase;
 import io.github.tbondetti.testresourceserver.core.usecase.produit.GetProduitUseCase;
-import io.github.tbondetti.testresourceserver.web.api.v1.controller.ProduitController;
 import io.github.tbondetti.testresourceserver.web.api.v1.dto.CreateProduitRequest;
 import io.github.tbondetti.testresourceserver.web.api.v1.mapper.ProduitMapper;
 import io.github.tbondetti.testresourceserver.web.api.v1.response.ProduitResponse;

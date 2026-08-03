@@ -1,7 +1,6 @@
 package io.github.tbondetti.testresourceserver.web.security.handler;
 
 import io.github.tbondetti.testresourceserver.web.api.v1.error.ApiErrorResponse;
-import io.github.tbondetti.testresourceserver.web.security.handler.ApiAuthenticationEntryPoint;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;

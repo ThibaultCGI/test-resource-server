@@ -12,8 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import static io.github.tbondetti.testresourceserver.web.security.Scopes.PRODUIT_READ;
-import static io.github.tbondetti.testresourceserver.web.security.Scopes.PRODUIT_WRITE;
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.OpenApiConstants.RESPONSE_400_BAD_REQUEST;
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.OpenApiConstants.RESPONSE_401_UNAUTHORIZED;
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.OpenApiConstants.RESPONSE_403_FORBIDDEN;
@@ -31,6 +29,8 @@ import static io.github.tbondetti.testresourceserver.web.openapi.constants.Produ
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.ProduitOpenApiConstants.RESPONSE_404_NOT_FOUND;
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.ProduitOpenApiConstants.TAG;
 import static io.github.tbondetti.testresourceserver.web.openapi.constants.ProduitOpenApiConstants.TAG_DESCRIPTION;
+import static io.github.tbondetti.testresourceserver.web.security.Scopes.PRODUIT_READ;
+import static io.github.tbondetti.testresourceserver.web.security.Scopes.PRODUIT_WRITE;
 
 @Tag(
         name = TAG,
