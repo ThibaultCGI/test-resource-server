@@ -346,7 +346,6 @@ components:
   securitySchemes:
     oauth2:
       type: oauth2
-      name: oauth2
       flows:
         clientCredentials:
           tokenUrl: http://localhost:8080/oauth2/token
