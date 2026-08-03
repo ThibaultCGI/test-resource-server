@@ -12,7 +12,7 @@
 
 	<groupId>io.github.tbondetti</groupId>
 	<artifactId>test-resource-server</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 
 	<description>Projet de simulation d'un Resource Server afin de tester l'application "auth-server" et l'authentification OAuth2</description>

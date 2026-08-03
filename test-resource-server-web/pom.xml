@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.github.tbondetti</groupId>
         <artifactId>test-resource-server</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>test-resource-server-web</artifactId>
