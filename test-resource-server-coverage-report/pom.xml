@@ -26,6 +26,11 @@
 
         <dependency>
             <groupId>io.github.tbondetti</groupId>
+            <artifactId>test-resource-server-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.tbondetti</groupId>
             <artifactId>test-resource-server-boot</artifactId>
         </dependency>
     </dependencies>

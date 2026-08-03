@@ -23,70 +23,143 @@ Le projet implémente :
 - OAuth2 Resource Server
 - JWT
 - JWKS
-- Contrôle d'accès par scopes
+- Contrôle d'accès par scopes OAuth2
+- Bean Validation
+- Gestion centralisée des erreurs
 - Architecture hexagonale
-- OpenAPI 3
+- OpenAPI 3.1
 - Swagger UI
 
 ---
 
-# Fonctionnalités
+## Fonctionnalités
 
-## Produits
+### Produits
 
 - Consultation d'un produit
 - Création d'un produit
 
-## Commandes
+### Commandes
 
 - Consultation d'une commande
 - Création d'une commande
 
-## Sécurité
+### Sécurité
 
 - Authentification OAuth2
 - Validation des JWT
 - Validation des signatures via JWKS
-- Autorisation basée sur les scopes OAuth2
+- Contrôle des scopes OAuth2
 - Contrôle d'accès via `@PreAuthorize`
 
-## Documentation
+### Validation
 
-- OpenAPI 3
+- Bean Validation (Jakarta Validation)
+- Validation métier
+- Réponses d'erreur homogènes
+
+### Documentation
+
+- OpenAPI 3.1
 - Swagger UI
+- Documentation des endpoints
 - Documentation des DTO
 - Documentation des réponses métier
 - Documentation des réponses d'erreur
+- Documentation OAuth2
 
 ---
 
-# Architecture
+## Architecture
 
 Le projet est développé selon une architecture hexagonale.
 
+### Architecture générale
+
 ```text
-Controller
-    ↓
-UseCase
-    ↓
-Port
-    ↓
-Adapter
+                ┌─────────────────┐
+                │      Web        │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │    Use Case     │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │      Port       │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │    Adapter      │
+                └─────────────────┘
 ```
 
-Structure :
+### Structure des modules
 
 ```text
 test-resource-server
 ├── test-resource-server-boot
 ├── test-resource-server-core
+├── test-resource-server-web
 ├── test-resource-server-infrastructure
 └── test-resource-server-coverage-report
 ```
 
+### Boot
+
+Assemblage de l'application.
+
+```text
+boot
+├── TestResourceServerApplication
+└── config
+    ├── PersistenceConfiguration
+    └── UseCaseConfiguration
+```
+
+### Core
+
+Contient le métier et ne dépend pas de Spring.
+
+```text
+core
+├── constants
+├── domain
+├── exception
+├── generator
+├── port
+├── usecase
+└── utils
+```
+
+### Web
+
+Contient tout ce qui concerne l'exposition HTTP.
+
+```text
+web
+├── api
+├── openapi
+└── security
+```
+
+### Infrastructure
+
+Contient les implémentations techniques des ports.
+
+```text
+infrastructure
+├── persistence
+│   └── adapter
+└── utils
+```
+
 ---
 
-# OAuth2
+## OAuth2
 
 Le projet agit comme un OAuth2 Resource Server.
 
@@ -104,15 +177,15 @@ Le Resource Server récupère automatiquement les clés publiques via :
 
 afin de valider :
 
-- signature
-- expiration
-- scopes
+- la signature ;
+- l'expiration ;
+- les scopes OAuth2.
 
 ---
 
-# Scopes
+## Scopes
 
-## Produits
+### Produits
 
 Lecture :
 
@@ -126,7 +199,7 @@ trs:produit-api.read
 trs:produit-api.write
 ```
 
-## Commandes
+### Commandes
 
 Lecture :
 
@@ -142,55 +215,87 @@ trs:commande-api.write
 
 ---
 
-# OpenAPI
+## OpenAPI
 
-Swagger UI :
+### Swagger UI
 
 ```text
 http://localhost:8081/swagger-ui.html
 ```
 
-Description OpenAPI JSON :
+### OpenAPI JSON
 
 ```text
 http://localhost:8081/v3/api-docs
 ```
 
-Description OpenAPI YAML :
+### OpenAPI YAML
 
 ```text
 http://localhost:8081/v3/api-docs.yaml
 ```
 
+La documentation expose :
+
+- OAuth2
+- client_credentials
+- scopes
+- DTO
+- réponses métier
+- réponses d'erreur
+
 ---
 
-# Endpoints
+## Validation
 
-## Produits
+Le projet utilise Jakarta Bean Validation :
 
-### Consulter un produit
+```
+@NotBlank
+@NotNull
+@NotEmpty
+@Email
+@Size
+@Digits
+@Positive
+```
+
+Les erreurs de validation sont retournées sous un format homogène :
+
+```json
+{
+  "code": "VALIDATION_ERROR",
+  "description": "Le nom du produit est obligatoire."
+}
+```
+
+---
+
+## Endpoints
+
+### Produits
+
+#### Consulter un produit
 
 ```http
 GET /api/v1/produits/{numero}
 ```
 
-### Créer un produit
+#### Créer un produit
 
 ```http
 POST /api/v1/produits
 ```
 
----
+### Commandes
 
-## Commandes
-
-### Consulter une commande
+#### Consulter une commande
 
 ```http
 GET /api/v1/commandes/{numero}
 ```
 
-### Créer une commande
+#### Créer une commande
 
 ```http
 POST /api/v1/commandes
@@ -198,7 +303,7 @@ POST /api/v1/commandes
 
 ---
 
-# Gestion des erreurs
+## Gestion des erreurs
 
 Format standard :
 
@@ -209,27 +314,27 @@ Format standard :
 }
 ```
 
-Codes HTTP :
+### Codes HTTP
 
-| Code | Description              |
-|------|--------------------------|
-| 400  | Erreur fonctionnelle     |
-| 401  | Authentification requise |
-| 403  | Accès refusé             |
-| 404  | Ressource inexistante    |
-| 500  | Erreur technique         |
+| Code  | Description                        |
+|-------|------------------------------------|
+| 400   | Erreur fonctionnelle ou validation |
+| 401   | Authentification requise           |
+| 403   | Accès refusé                       |
+| 404   | Ressource inexistante              |
+| 500   | Erreur technique                   |
 
 ---
 
-# Exécution locale
+## Exécution locale
 
-## Auth Server
+### Authorization Server
 
 ```text
 http://localhost:8080
 ```
 
-## Resource Server
+### Resource Server
 
 ```text
 http://localhost:8081
@@ -237,14 +342,16 @@ http://localhost:8081
 
 ---
 
-# Tests
+## Tests
 
 Le projet contient :
 
-- Tests unitaires des UseCases
+- Tests unitaires des Use Cases
 - Tests unitaires des Controllers
 - Tests unitaires des Mappers
 - Tests unitaires des ValidationUtils
+- Tests unitaires des ExceptionHandlers
+- Tests unitaires des Security Handlers
 - Tests unitaires des Generators
 
 Rapport :
@@ -255,13 +362,29 @@ test-resource-server-coverage-report
 
 ---
 
-# Objectif du projet
+## Documentation
+
+Documentation technique :
+
+```text
+docs/
+├── architecture.md
+├── oauth2.md
+├── openapi.md
+└── test-resource-server-api.yaml
+```
+
+---
+
+## Objectif du projet
 
 Le projet permet :
 
-- de tester auth-server
-- de tester OAuth2
-- de tester JWT
-- de tester JWKS
-- de tester les scopes OAuth2
-- de démontrer une architecture hexagonale avec Spring Boot
+- de tester auth-server ;
+- de tester OAuth2 ;
+- de tester JWT ;
+- de tester JWKS ;
+- de tester les scopes OAuth2 ;
+- de tester Swagger UI avec OAuth2 ;
+- de démontrer une architecture hexagonale avec Spring Boot ;
+- de démontrer l'intégration OpenAPI / Bean Validation.

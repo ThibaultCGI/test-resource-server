@@ -30,6 +30,7 @@
 		<module>test-resource-server-infrastructure</module>
 		<module>test-resource-server-boot</module>
 		<module>test-resource-server-coverage-report</module>
+		<module>test-resource-server-web</module>
 	</modules>
 
 	<properties>
@@ -57,7 +58,7 @@
 			**/TestResourceServerApplication.java,
 			**/config/**,
 			**/*Configuration.java,
-			**/**Adapter.java,
+			**/*Adapter.java,
 			**/DomainGeneratorUtils.java
 		</sonar.coverage.exclusions>
 	</properties>
@@ -67,6 +68,12 @@
 			<dependency>
 				<groupId>io.github.tbondetti</groupId>
 				<artifactId>test-resource-server-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.github.tbondetti</groupId>
+				<artifactId>test-resource-server-web</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
