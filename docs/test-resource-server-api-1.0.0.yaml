@@ -10,7 +10,7 @@ info:
     name: Thibault BONDETTI
   version: 1.0.0
 servers:
-  - url: http://localhost:8081
+  - url: http://resource-server.local:8081
     description: Generated server url
 tags:
   - name: Produits
@@ -348,7 +348,7 @@ components:
       type: oauth2
       flows:
         clientCredentials:
-          tokenUrl: http://localhost:8080/oauth2/token
+          tokenUrl: http://auth-server.local:8080/oauth2/token
           scopes:
             trs:produit-api.read: Lire les produits
             trs:produit-api.write: Créer et modifier les produits

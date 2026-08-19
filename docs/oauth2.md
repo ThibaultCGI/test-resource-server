@@ -245,13 +245,13 @@ L'utilisateur peut :
 Swagger UI est exécuté depuis :
 
 ```text
-http://localhost:8081
+http://resource-server.local:8081
 ```
 
 et obtient ses tokens auprès de :
 
 ```text
-http://localhost:8080
+http://auth-server.local:8080
 ```
 
 Une configuration CORS est donc nécessaire côté Authorization Server.
@@ -265,19 +265,19 @@ Les requêtes préflight `OPTIONS` sont traitées avant les contrôles de sécur
 Swagger UI :
 
 ```text
-http://localhost:8081/swagger-ui.html
+http://resource-server.local:8081/swagger-ui.html
 ```
 
 OpenAPI JSON :
 
 ```text
-http://localhost:8081/v3/api-docs
+http://resource-server.local:8081/v3/api-docs
 ```
 
 OpenAPI YAML :
 
 ```text
-http://localhost:8081/v3/api-docs.yaml
+http://resource-server.local:8081/v3/api-docs.yaml
 ```
 
 Le schéma OpenAPI documente :
@@ -311,7 +311,7 @@ Scopes
 Swagger UI récupère alors automatiquement un JWT auprès de :
 
 ```text
-http://localhost:8080/oauth2/token
+http://auth-server.local:8080/oauth2/token
 ```
 
 ---

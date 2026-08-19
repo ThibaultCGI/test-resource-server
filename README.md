@@ -220,19 +220,19 @@ trs:commande-api.write
 ### Swagger UI
 
 ```text
-http://localhost:8081/swagger-ui.html
+http://resource-server.local:8081/swagger-ui.html
 ```
 
 ### OpenAPI JSON
 
 ```text
-http://localhost:8081/v3/api-docs
+http://resource-server.local:8081/v3/api-docs
 ```
 
 ### OpenAPI YAML
 
 ```text
-http://localhost:8081/v3/api-docs.yaml
+http://resource-server.local:8081/v3/api-docs.yaml
 ```
 
 La documentation expose :
@@ -331,13 +331,13 @@ Format standard :
 ### Authorization Server
 
 ```text
-http://localhost:8080
+http://auth-server.local:8080
 ```
 
 ### Resource Server
 
 ```text
-http://localhost:8081
+http://resource-server.local:8081
 ```
 
 ---
